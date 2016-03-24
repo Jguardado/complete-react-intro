@@ -87,7 +87,6 @@ html {
   width: 30%;
   height: 0;
   padding-bottom: 19.8%;
-  overflow: hidden;
   margin-bottom: 3%;
   border: 2px solid #333;
   border-radius: 4px;
@@ -126,7 +125,6 @@ a > .show-card {
   display: block;
   float: right;
   width: 52%;
-  overflow-y: scroll;
 }
 
 .show-card-title {
