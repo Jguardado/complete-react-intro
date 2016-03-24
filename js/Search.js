@@ -21,8 +21,10 @@ const Search = React.createClass({
           <input onChange={this.handleSearchTermEvent} value={this.state.searchTerm} className='search-input' type='text' placeholder='Search'/>
         </header>
         <div className='shows'>
-        {data.shows.map((show) => (
-          <ShowCard {...show} key={show.imdbID} />
+        {data.shows
+          .filter((show) => `${show.title} ${show.description}`.toUpperCase().indexOf(this.state.searchTerm.toUpperCase()) >= 0)
+          .map((show) => (
+            <ShowCard {...show} key={show.imdbID} />
         ))}
         </div>
       </div>
