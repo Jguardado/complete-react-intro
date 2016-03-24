@@ -1,14 +1,15 @@
 const React = require('react')
 const ReactDOM = require('react-dom')
+const Landing = require('./Landing')
+const { Router, Route, hashHistory } = require('react-router')
+const Search = require('./Search')
 
 const App = () => (
-    <div className='app-container'>
-      <div className='home-info'>
-        <h1 className='title'>Videos</h1>
-        <input className='search' type='text' placeholder='Search'/>
-        <button className='browse-all'> or Browswe All</button>
-      </div>
-    </div>
+  <Router history={hashHistory}>
+    <Route path='/' component={Landing} />
+    <Route path='/search' component={Search}/>
+  </Router>
+
 )
 
 ReactDOM.render(<App />, document.getElementById('app'))
