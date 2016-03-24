@@ -16,7 +16,7 @@ module.exports = {
     chunks: false
   },
   module: {
-    preloaders: [
+    preLoaders: [
       {
         test: /\.jsx?$/,
         loader: 'eslint-loader',
