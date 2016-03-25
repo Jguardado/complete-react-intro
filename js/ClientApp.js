@@ -9,6 +9,8 @@ const { shows } = require('../public/data')
 
 const App = React.createClass({
   assignShow (nextState, replace) {
+    console.log('this function is being called')
+
     const showArray = shows.filter((show) => show.imdbID === nextState.params.id)
 
     if (showArray.length < 1) {
