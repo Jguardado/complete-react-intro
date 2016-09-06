@@ -1,7 +1,7 @@
 const React = require('react')
 const Header = require('./Header')
-const axios = require('axios')
 const { connector } = require('./Store')
+const axios = require('axios')
 
 class Details extends React.Component {
   constructor (props) {
@@ -12,7 +12,7 @@ class Details extends React.Component {
     }
   }
   componentDidMount () {
-    axios.get(`http://www.omdbapi.com/?i=${this.assignShow(this.props.params.id).imdbID}`)
+    axios.get(`http://www.omdbapi.com/?i=${this.props.params.id}`)
       .then((response) => {
         this.setState({omdbData: response.data})
       })
@@ -20,12 +20,15 @@ class Details extends React.Component {
         console.error('axios error', error)
       })
   }
-  assignShow (id) {
-    const showArray = this.props.shows.filter((show) => show.imdbID === id)
-    return showArray[0]
+  assignShow (shows, id) {
+    let show = shows.filter((show) => show.imdbID === id)
+    if (show.length < 1) {
+      return {}
+    }
+    return show[0]
   }
   render () {
-    const { title, description, year, poster, trailer } = this.assignShow(this.props.params.id)
+    const { title, description, year, poster, trailer } = this.assignShow(this.props.shows, this.props.params.id)
     let rating
     if (this.state.omdbData.imdbRating) {
       rating = <h3 className='video-rating'>{this.state.omdbData.imdbRating}</h3>
@@ -41,18 +44,16 @@ class Details extends React.Component {
           <p className='video-description'>{description}</p>
         </div>
         <div className='video-container'>
-          <iframe src={`https://www.youtube-nocookie.com/embed/${trailer}?rel=0&amp;controls=0&amp;showinfo=0`} frameBorder='0' allowFullScreen></iframe>
+          <iframe src={`https://www.youtube-nocookie.com/embed/${trailer}?rel=0%amp;controls=0&amp;showinfo=0`} frameBorder='0' allowFullScreen></iframe>
         </div>
       </div>
     )
   }
 }
 
-const { arrayOf, object } = React.PropTypes
-
 Details.propTypes = {
-  params: object,
-  shows: arrayOf(object).isRequired
+  params: React.PropTypes.object,
+  shows: React.PropTypes.arrayOf(React.PropTypes.object)
 }
 
 module.exports = connector(Details)

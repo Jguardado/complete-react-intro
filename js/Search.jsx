@@ -1,14 +1,9 @@
 const React = require('react')
 const ShowCard = require('./ShowCard')
 const Header = require('./Header')
-const { object, string, arrayOf } = React.PropTypes
 const { connector } = require('./Store')
 
-const Search = React.createClass({
-  propTypes: {
-    shows: arrayOf(object),
-    searchTerm: string
-  },
+class Search extends React.Component {
   render () {
     return (
       <div className='container'>
@@ -23,6 +18,11 @@ const Search = React.createClass({
       </div>
     )
   }
-})
+}
+
+Search.propTypes = {
+  shows: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+  searchTerm: React.PropTypes.string
+}
 
 module.exports = connector(Search)

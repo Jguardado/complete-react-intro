@@ -1,40 +1,37 @@
 const React = require('react')
-const { hashHistory } = require('react-router')
-const { Link } = require('react-router')
+const ReactRouter = require('react-router')
+const { Link, browserHistory } = ReactRouter
 const { connector } = require('./Store')
 
 class Landing extends React.Component {
   constructor (props) {
     super(props)
 
-    this.handleSearchTermEvent = this.handleSearchTermEvent.bind(this)
-    this.gotoSearch = this.gotoSearch.bind(this)
+    this.handleTermEvent = this.handleTermEvent.bind(this)
   }
-  handleSearchTermEvent (event) {
+  handleTermEvent (event) {
     this.props.setSearchTerm(event.target.value)
   }
-  gotoSearch (event) {
-    hashHistory.push('search')
+  goToSearch (event) {
+    browserHistory.push('search')
     event.preventDefault()
   }
   render () {
     return (
       <div className='home-info'>
         <h1 className='title'>svideo</h1>
-        <form onSubmit={this.gotoSearch}>
-          <input value={this.props.searchTerm} onChange={this.handleSearchTermEvent} className='search' type='text' placeholder='Search' />
+        <form onSubmit={this.goToSearch}>
+          <input onChange={this.handleTermEvent} className='search' type='text' placeholder='Search' value={this.props.searchTerm} />
         </form>
-        <Link to='/search' className='browse-all'> or Browse All</Link>
+        <Link to='/search' className='browse-all'>or Browse All</Link>
       </div>
     )
   }
 }
 
-const { func, string } = React.PropTypes
-
 Landing.propTypes = {
-  searchTerm: string,
-  setSearchTerm: func
+  setSearchTerm: React.PropTypes.func,
+  searchTerm: React.PropTypes.string
 }
 
 module.exports = connector(Landing)

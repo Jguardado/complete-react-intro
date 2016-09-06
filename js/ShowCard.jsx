@@ -14,14 +14,12 @@ const ShowCard = (props) => (
   </Link>
 )
 
-const { string } = React.PropTypes
-
 ShowCard.propTypes = {
-  title: string.isRequired,
-  description: string.isRequired,
-  year: string.isRequired,
-  poster: string.isRequired,
-  imdbID: string.isRequired
+  poster: React.PropTypes.string.isRequired,
+  title: React.PropTypes.string.isRequired,
+  year: React.PropTypes.string.isRequired,
+  description: React.PropTypes.string.isRequired,
+  imdbID: React.PropTypes.string.isRequired
 }
 
 module.exports = ShowCard

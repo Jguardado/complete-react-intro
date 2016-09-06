@@ -1,12 +1,13 @@
 const React = require('react')
 const Layout = require('./Layout')
-const { Router, browserHistory } = require('react-router')
-const { store } = require('./Store')
+const ReactRouter = require('react-router')
+const { Router, browserHistory } = ReactRouter
 const { Provider } = require('react-redux')
+const { store } = require('./Store')
 
 if (typeof module !== 'undefined' && module.require) {
   if (typeof require.ensure === 'undefined') {
-    require.ensure = require('node-ensure') // shim for node.js
+    require.ensure = require('node-ensure')
   }
 }
 
@@ -15,7 +16,10 @@ const rootRoute = {
   path: '/',
   indexRoute: {
     getComponent (location, cb) {
-      require.ensure([], () => {
+      require.ensure([], (_, error) => {
+        if (error) {
+          return console.error('ClientApp Landing require.ensure error', error)
+        }
         cb(null, require('./Landing'))
       })
     }
@@ -24,7 +28,10 @@ const rootRoute = {
     {
       path: 'search',
       getComponent (location, cb) {
-        require.ensure([], () => {
+        require.ensure([], (_, error) => {
+          if (error) {
+            return console.error('ClientApp Search require.ensure error', error)
+          }
           cb(null, require('./Search'))
         })
       }
@@ -32,7 +39,10 @@ const rootRoute = {
     {
       path: 'details/:id',
       getComponent (location, cb) {
-        require.ensure([], () => {
+        require.ensure([], (_, error) => {
+          if (error) {
+            return console.error('ClientApp Details require.ensure error', error)
+          }
           cb(null, require('./Details'))
         })
       }
@@ -40,7 +50,7 @@ const rootRoute = {
   ]
 }
 
-const App = React.createClass({
+class App extends React.Component {
   render () {
     return (
       <Provider store={store}>
@@ -48,9 +58,8 @@ const App = React.createClass({
       </Provider>
     )
   }
-})
+}
 
 App.Routes = rootRoute
 App.History = browserHistory
-
 module.exports = App

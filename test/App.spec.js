@@ -1,41 +1,49 @@
 /* eslint-env mocha */
-
-const { expect } = require('chai');
 const React = require('react');
+const chai = require('chai');
+const { expect } = chai;
 const Search = require('../js/Search');
 const ShowCard = require('../js/ShowCard');
-const { shallow, mount } = require('enzyme');
-const { shows } = require('../public/data');
+const Header = require('../js/Header');
 const { store, rootReducer } = require('../js/Store');
+const enzyme = require('enzyme');
+const { render } = enzyme;
+const data = require('../public/data');
+const { Provider } = require('react-redux');
 
-xdescribe('<Search /> ', () => {
+describe('<Header />', () => {
   it('should render the brand', () => {
-    const wrapper = shallow(<Search />);
-    expect(wrapper.contains(<h1 className='brand'>svideo</h1>)).to.be.true;
+    const wrapper = render(<Header store={store} />);
+    expect(wrapper.find('h1.brand').text()).to.equal('svideo');
   });
+});
 
-  it('should render as many shows as there are data for', () => {
-    const wrapper = shallow(<Search />);
-    expect(wrapper.find(ShowCard).length).to.equal(shows.length);
+describe('<Search />', () => {
+
+  const mockRoute = {
+    shows: data.shows,
+  };
+
+  it('show render as many shows as there are data for', () => {
+    const wrapper = render(<Provider store={store}><Search route={mockRoute} /></Provider>);
+    expect(wrapper.find('div.show-card').length).to.equal(data.shows.length);
   });
 
   it('should filter correctly given new state', () => {
-    const wrapper = mount(<Search />);
-    const input = wrapper.find('.search-input');
-    input.node.value = 'house';
-    input.simulate('change');
-    expect(wrapper.state('searchTerm')).to.equal('house');
-    expect(wrapper.find('.show-card').length).to.equal(2);
+    store.dispatch({ type: 'setSearchTerm', value: 'house' });
+    const wrapper = render(<Provider store={store}><Search route={mockRoute} /></Provider>);
+    expect(wrapper.find('div.show-card').length).to.equal(2);
   });
 });
 
 describe('Store', () => {
   it('should bootstrap', () => {
     const state = rootReducer(undefined, { type: '@@redux/INIT' });
-    expect(state).to.deep.equal({ searchTerm: '' });
+    expect(state).to.deep.equal({ searchTerm: '', shows: data.shows });
   });
+
   it('should handle setSearchTerm actions', () => {
-    const state = rootReducer({ searchTerm: 'some random string' }, { type: 'setSearchTerm', value: 'correct string' });
-    expect(state).to.deep.equal({ searchTerm: 'correct string' });
+    const state = rootReducer({ searchTerm: 'some random string', shows: data.shows }, { type: 'setSearchTerm', value: 'correct string' });
+    expect(state).to.deep.equal({ searchTerm: 'correct string', shows: data.shows });
   });
 });
