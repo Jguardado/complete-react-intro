@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   context: __dirname,
@@ -6,14 +6,15 @@ module.exports = {
   output: {
     path: path.join(__dirname, '/public'),
     filename: 'bundle.js',
+    publicPath: '/public/',
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.json']
+    extensions: ['', '.js', '.jsx', '.json'],
   },
   stats: {
     colors: true,
     reasons: true,
-    chunks: false
+    chunks: true,
   },
   module: {
     preLoaders: [
@@ -21,7 +22,7 @@ module.exports = {
         test: /\.jsx?$/,
         loader: 'eslint-loader',
         exclude: /node_modules/,
-      }
+      },
     ],
     loaders: [
       {
@@ -31,7 +32,7 @@ module.exports = {
       {
         test: /\.json$/,
         loader: 'json-loader',
-      }
-    ]
-  }
-}
+      },
+    ],
+  },
+};
